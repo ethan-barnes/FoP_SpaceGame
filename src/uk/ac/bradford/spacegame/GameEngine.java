@@ -224,7 +224,20 @@ public class GameEngine {
      * level
      */
     private Alien[] spawnAliens() {
-        return null;            //modify to return array of Alien objects
+        int numOfAliens = 8;
+        int alienHP = 10;
+        aliens = new Alien[numOfAliens];
+
+        int location = rng.nextInt(getSpawns().size()); // Generates a random spawn location.
+        int x = getSpawns().get(location).x;
+        int y = getSpawns().get(location).y;
+        
+        for (int i = 0; i < numOfAliens; i++) {
+            Alien al = new Alien(alienHP, x, y);
+            aliens[i] = al;
+        }
+        
+        return aliens;
     }
 
     /**
@@ -391,7 +404,6 @@ public class GameEngine {
                             break;
                     }
 
-                    
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("asteroid err" + e);
                 }
