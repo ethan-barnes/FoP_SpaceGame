@@ -330,8 +330,8 @@ public class GameEngine {
 
             // Checks if the player will move onto an asteroid.
             for (int i = 0; i < asteroids.length; i++) {
-                if (asteroids[i].getX() == point.x && asteroids[i].getY() == point.y) {
-                    asteroids[i] = newAsteroid();
+                if (asteroids[i] != null && asteroids[i].getX() == point.x && asteroids[i].getY() == point.y) {
+                    asteroids[i] = null;
                     points++;
                 }
             }
@@ -351,7 +351,47 @@ public class GameEngine {
      * index of the asteroids array that the destroyed asteroid used to occupy.
      */
     private void moveAsteroids() {
+        for (int i = 0; i < asteroids.length; i++) {
+            if (asteroids[i] != null) {                
+                Asteroid.Direction dir = asteroids[i].getMovementDirection();
+                int x = asteroids[i].getX();
+                int y = asteroids[i].getY();
+                
+                switch (dir) {
+                    case UP:
+                        if (y - 1 < 0 || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                            asteroids[i] = newAsteroid();
+                        } else {
+                            asteroids[i].setPosition(x, y - 1);
+                        }
+                        break;
+                    case DOWN:
+                        if (y + 1 > GRID_HEIGHT || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                            asteroids[i] = newAsteroid();
+                        } else {
+                            asteroids[i].setPosition(x, y + 1);
+                        }
+                        break;
+                    case LEFT:
+                        if (x - 1 < 0 || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                            asteroids[i] = newAsteroid();
+                        } else {
+                            asteroids[i].setPosition(x - 1, y);
+                        }
+                        break;
+                    case RIGHT:
+                        if (x + 1 > GRID_WIDTH || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                            asteroids[i] = newAsteroid();
+                        } else {
+                            asteroids[i].setPosition(x + 1, y);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
 
+        }
     }
 
     /**
@@ -471,7 +511,7 @@ public class GameEngine {
      * health to maximum.
      */
     private void newLevel() {
-        
+
     }
 
     /**
