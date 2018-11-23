@@ -324,6 +324,7 @@ public class GameEngine {
      * @param point The coordinates that the player will move to.
      */
     public void movePlayer(Point point) {
+        System.out.println("it really do be like that");
         // Check if new location is in getSpawns() if it is, player can move here.
         if (getSpawns().contains(point)) { // True if it is a valid move.
             player.setPosition(point.x, point.y);
