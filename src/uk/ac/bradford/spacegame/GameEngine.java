@@ -391,6 +391,7 @@ public class GameEngine {
                             break;
                     }
 
+                    
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.out.println("asteroid err" + e);
                 }
