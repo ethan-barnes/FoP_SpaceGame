@@ -352,45 +352,50 @@ public class GameEngine {
      */
     private void moveAsteroids() {
         for (int i = 0; i < asteroids.length; i++) {
-            if (asteroids[i] != null) {                
+            if (asteroids[i] != null) {
                 Asteroid.Direction dir = asteroids[i].getMovementDirection();
                 int x = asteroids[i].getX();
                 int y = asteroids[i].getY();
-                
-                switch (dir) {
-                    case UP:
-                        if (y - 1 < 0 || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                            asteroids[i] = newAsteroid();
-                        } else {
-                            asteroids[i].setPosition(x, y - 1);
-                        }
-                        break;
-                    case DOWN:
-                        if (y + 1 > GRID_HEIGHT || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                            asteroids[i] = newAsteroid();
-                        } else {
-                            asteroids[i].setPosition(x, y + 1);
-                        }
-                        break;
-                    case LEFT:
-                        if (x - 1 < 0 || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                            asteroids[i] = newAsteroid();
-                        } else {
-                            asteroids[i].setPosition(x - 1, y);
-                        }
-                        break;
-                    case RIGHT:
-                        if (x + 1 > GRID_WIDTH || tiles[x][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                            asteroids[i] = newAsteroid();
-                        } else {
-                            asteroids[i].setPosition(x + 1, y);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
 
+                try {
+                    switch (dir) {
+                        case UP:
+                            if (y - 1 < 0 || tiles[x][y - 1] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                                asteroids[i] = newAsteroid();
+                            } else {
+                                asteroids[i].setPosition(x, y - 1);
+                            }
+                            break;
+                        case DOWN:
+                            if (y + 1 > GRID_HEIGHT || tiles[x][y + 1] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                                asteroids[i] = newAsteroid();
+                            } else {
+                                asteroids[i].setPosition(x, y + 1);
+                            }
+                            break;
+                        case LEFT:
+                            if (x - 1 < 0 || tiles[x - 1][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                                asteroids[i] = newAsteroid();
+                            } else {
+                                asteroids[i].setPosition(x - 1, y);
+                            }
+                            break;
+                        case RIGHT:
+                            if (x + 1 > GRID_WIDTH || tiles[x + 1][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
+                                asteroids[i] = newAsteroid();
+                            } else {
+                                asteroids[i].setPosition(x + 1, y);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("asteroid err" + e);
+                }
+
+            }
         }
     }
 
