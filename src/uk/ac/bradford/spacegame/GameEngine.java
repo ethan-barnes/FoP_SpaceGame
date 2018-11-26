@@ -224,19 +224,19 @@ public class GameEngine {
      * level
      */
     private Alien[] spawnAliens() {
-        int numOfAliens = 8;
+        int numOfAliens = 3;
         int alienHP = 10;
         aliens = new Alien[numOfAliens];
 
-        int location = rng.nextInt(getSpawns().size()); // Generates a random spawn location.
-        int x = getSpawns().get(location).x;
-        int y = getSpawns().get(location).y;
-        
         for (int i = 0; i < numOfAliens; i++) {
+            int location = rng.nextInt(getSpawns().size()); // Generates a random spawn location.
+            int x = getSpawns().get(location).x;
+            int y = getSpawns().get(location).y;
+            
             Alien al = new Alien(alienHP, x, y);
             aliens[i] = al;
         }
-        
+
         return aliens;
     }
 
