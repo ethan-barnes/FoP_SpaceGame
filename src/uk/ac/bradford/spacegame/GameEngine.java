@@ -432,7 +432,52 @@ public class GameEngine {
      * @param a The Alien that needs to be moved
      */
     private void moveAlien(Alien a) {
-        
+        /*
+        Move alien randomly.
+        Must move to getSpawns() location.
+        Can't move to another alien location.
+        Can't move to player location.
+         */
+        int dir = rng.nextInt(3);
+
+        switch (dir) {
+            // Left
+            case 0:
+            // Right
+            case 1:
+            // Up
+            case 2:
+            // Down
+            case 3:
+        }
+    }
+
+    /**
+     * Checks if the direction an alien will move is a valid location to move
+     * to.
+     *
+     * @param alien the alien object to be moved.
+     * @param dir the direction the alien will move.
+     * @return if the move is valid.
+     */
+    private boolean alienCanMove(Alien alien, int dir) {
+        Point aPoint = new Point();
+        aPoint.x = alien.getX();
+        aPoint.y = alien.getY();
+
+        Point pPoint = new Point();
+        pPoint.x = player.getX();
+        pPoint.y = player.getY();
+
+        switch (dir) {
+            // Left
+            case 0:
+                aPoint.x--; // New location if moving left.
+                // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
+                if (getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && ) {
+
+                }
+        }
     }
 
     /**
