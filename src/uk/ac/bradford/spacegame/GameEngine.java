@@ -232,7 +232,7 @@ public class GameEngine {
             int location = rng.nextInt(getSpawns().size()); // Generates a random spawn location.
             int x = getSpawns().get(location).x;
             int y = getSpawns().get(location).y;
-            
+
             Alien al = new Alien(alienHP, x, y);
             aliens[i] = al;
         }
@@ -418,7 +418,11 @@ public class GameEngine {
      * that is not null.
      */
     private void moveAliens() {
-
+        for (int i = 0; i < aliens.length; i++) {
+            if (aliens[i] != null) {
+                moveAlien(aliens[i]);
+            }
+        }
     }
 
     /**
@@ -428,7 +432,7 @@ public class GameEngine {
      * @param a The Alien that needs to be moved
      */
     private void moveAlien(Alien a) {
-
+        
     }
 
     /**
