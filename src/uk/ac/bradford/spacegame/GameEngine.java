@@ -388,44 +388,39 @@ public class GameEngine {
                 Point asPoint = new Point(asteroids[i].getX(),
                         asteroids[i].getY());
 
-                try {
-                    // Potential new coords based on movement direction.
-                    switch (dir) {
-                        case UP:
-                            asPoint.y = asteroids[i].getY() - 1;
-                            break;
-                        case DOWN:
-                            asPoint.y = asteroids[i].getY() - 1;
-                            break;
-                        case LEFT:
-                            asPoint.x = asteroids[i].getX() - 1;
-                            break;
-                        case RIGHT:
-                            asPoint.x = asteroids[i].getX() + 1;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    /*
-                    Checks that new location is a space tile and not occupied by
-                    player.
-                     */
-                    if ((asPoint.x >= 0 && asPoint.x <= GRID_WIDTH)
-                            && asPoint.y >= 0 && asPoint.y <= GRID_HEIGHT) {
-                        if (getSpawns().contains(asPoint)
-                                && !(asPoint.equals(pPoint))) {
-                            asteroids[i].setPosition(asPoint.x, asPoint.y);
-                        }
-                    } else {
-                        // Re-places asteroid somewhere else if it can't move.
-                        asteroids[i] = newAsteroid();
-                    }
-
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("asteroid err moveAsteroids" + e);
+                // Potential new coords based on movement direction.
+                switch (dir) {
+                    case UP:
+                        asPoint.y = asteroids[i].getY() - 1;
+                        break;
+                    case DOWN:
+                        asPoint.y = asteroids[i].getY() - 1;
+                        break;
+                    case LEFT:
+                        asPoint.x = asteroids[i].getX() - 1;
+                        break;
+                    case RIGHT:
+                        asPoint.x = asteroids[i].getX() + 1;
+                        break;
+                    default:
+                        break;
                 }
 
+                //Checks that the new location is inside the grid.
+                if ((asPoint.x >= 0 && asPoint.x <= GRID_WIDTH)
+                        && asPoint.y >= 0 && asPoint.y <= GRID_HEIGHT) {
+                    /*
+                        Checks that new location is a space tile and not 
+                        occupied by the player.
+                     */
+                    if (getSpawns().contains(asPoint)
+                            && !(asPoint.equals(pPoint))) {
+                        asteroids[i].setPosition(asPoint.x, asPoint.y);
+                    }
+                } else {
+                    // Re-places asteroid somewhere else if it can't move.
+                    asteroids[i] = newAsteroid();
+                }
             }
         }
     }
@@ -486,34 +481,23 @@ public class GameEngine {
         // Compare new location to each asteroid location.
         for (int i = 0; i < asteroids.length; i++) {
             if (asteroids[i] != null) {
-                try {
-                    // Representation of each asteroid location.
-                    Point asPoint = new Point(asteroids[i].getX(),
-                            asteroids[i].getY());
-                    
-                    /* 
+
+                // Representation of each asteroid location.
+                Point asPoint = new Point(asteroids[i].getX(),
+                        asteroids[i].getY());
+
+                /* 
                     Checks if location is a SPACE tile, and the player is not in
                     this tile, and there is no asteroid on this tile.
                     True if not valid tile.
-                     */
-                    if (!(getSpawns().contains(aPoint)
-                            && !(aPoint.equals(pPoint))
-                            && !(aPoint.equals(asPoint)))) { 
-                        move = false;
-                        break;
-                    } else {
-                        move = true;
-                    }
-                } catch (java.lang.NullPointerException e) {
-                    System.out.println("asteroid err moveAlien" + e);
-                }
-
-                try {
-                    if (move == true) {
-                        a.setPosition(aPoint.x, aPoint.y);
-                    }
-                } catch (java.lang.NullPointerException e) {
-                    System.out.println("alien err moveAlien " + e);
+                 */
+                if (!(getSpawns().contains(aPoint)
+                        && !(aPoint.equals(pPoint))
+                        && !(aPoint.equals(asPoint)))) {
+                    move = false;
+                    break;
+                } else {
+                    move = true;
                 }
             }
         }
