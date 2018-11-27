@@ -447,9 +447,6 @@ public class GameEngine {
     private void moveAlien(Alien a) {
         /*
         Move alien randomly. (May become more advanced in future.)
-        Must move to getSpawns() location.
-        Can't move to another alien location.
-        Can't move to player location.
          */
         Boolean move = false;
         int dir = rng.nextInt(4);
@@ -476,12 +473,13 @@ public class GameEngine {
                 aPoint.y = a.getY() + 1;
                 break;
         }
+
         // Representation of player location.
         Point pPoint = new Point(player.getX(), player.getY());
+
         // Compare new location to each asteroid location.
         for (int i = 0; i < asteroids.length; i++) {
             if (asteroids[i] != null) {
-
                 // Representation of each asteroid location.
                 Point asPoint = new Point(asteroids[i].getX(),
                         asteroids[i].getY());
