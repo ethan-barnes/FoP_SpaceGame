@@ -433,55 +433,47 @@ public class GameEngine {
      */
     private void moveAlien(Alien a) {
         /*
-        Move alien randomly.
+        Move alien randomly. (May become more advanced in future.)
         Must move to getSpawns() location.
         Can't move to another alien location.
         Can't move to player location.
          */
+        Boolean move = false;
         int dir = rng.nextInt(3);
+        // Creating new point to represent alien location.
+        Point aPoint = new Point();
+        aPoint.x = a.getX();
+        aPoint.y = a.getY();
 
-        switch (dir) {
+        switch (dir) { // Potential new alien location.
             // Left
             case 0:
+                aPoint.x = a.getX() - 1;
             // Right
             case 1:
+                aPoint.x = a.getX() + 1;
             // Up
             case 2:
+                aPoint.y = a.getY() - 1;
             // Down
             case 3:
+                aPoint.y = a.getY() + 1;
         }
-    }
 
-    /**
-     * Checks if the direction an alien will move is a valid location to move
-     * to.
-     *
-     * @param alien the alien object to be moved.
-     * @param dir the direction the alien will move.
-     * @return if the move is valid.
-     */
-    private boolean alienCanMove(Alien alien, int dir) {
-        Point aPoint = new Point();
-        aPoint.x = alien.getX();
-        aPoint.y = alien.getY();
-
-        Point pPoint = new Point();
-        pPoint.x = player.getX();
-        pPoint.y = player.getY();
-
-        switch (dir) {
-            // Left
-            case 0:
-                aPoint.x--; // New location if moving left.
-                for (int i = 0; i < asteroids.length; i++) {
-                    Point asPoint = new Point(asteroids[i].getX(), asteroids[i].getY());
-                    // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
-                    if (getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && !(aPoint.equals(asPoint))) {
-                            
-                    }
-
-                }
-
+        Point pPoint = new Point(player.getX(), player.getY()); // Representation of player location.
+        for (int i = 0; i < asteroids.length; i++) { // Compare new location to each asteroid location.
+            Point asPoint = new Point(asteroids[i].getX(), asteroids[i].getY()); // Representation of each asteroid location.
+            // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
+            if (!(getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && !(aPoint.equals(asPoint)))) { // True if not valid tile.
+                move = false;
+                break;
+            } else {
+                move = true;
+            }
+        }
+        
+        if (move == true) {
+            a.setPosition(aPoint.x, aPoint.y);
         }
     }
 
