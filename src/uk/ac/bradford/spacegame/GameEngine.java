@@ -477,7 +477,7 @@ public class GameEngine {
                     Point asPoint = new Point(asteroids[i].getX(), asteroids[i].getY());
                     // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
                     if (getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && !(aPoint.equals(asPoint))) {
-                            
+                            System.out.println("test");
                     }
 
                 }
