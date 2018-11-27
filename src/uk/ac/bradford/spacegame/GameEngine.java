@@ -364,48 +364,42 @@ public class GameEngine {
      * index of the asteroids array that the destroyed asteroid used to occupy.
      */
     private void moveAsteroids() {
+        Point pPoint = new Point(player.getX(), player.getY());
+
         for (int i = 0; i < asteroids.length; i++) {
             if (asteroids[i] != null) {
                 Asteroid.Direction dir = asteroids[i].getMovementDirection();
-                int x = asteroids[i].getX();
-                int y = asteroids[i].getY();
+                Point asPoint = new Point(asteroids[i].getX(), asteroids[i].getY());
 
                 try {
                     switch (dir) {
                         case UP:
-                            if (y - 1 < 0 || tiles[x][y - 1] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                                asteroids[i] = newAsteroid();
-                            } else {
-                                asteroids[i].setPosition(x, y - 1);
-                            }
+                            asPoint.y = asteroids[i].getY() - 1;
                             break;
                         case DOWN:
-                            if (y + 1 > GRID_HEIGHT || tiles[x][y + 1] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                                asteroids[i] = newAsteroid();
-                            } else {
-                                asteroids[i].setPosition(x, y + 1);
-                            }
+                            asPoint.y = asteroids[i].getY() - 1;
                             break;
                         case LEFT:
-                            if (x - 1 < 0 || tiles[x - 1][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                                asteroids[i] = newAsteroid();
-                            } else {
-                                asteroids[i].setPosition(x - 1, y);
-                            }
+                            asPoint.x = asteroids[i].getX() - 1;
                             break;
                         case RIGHT:
-                            if (x + 1 > GRID_WIDTH || tiles[x + 1][y] == TileType.BLACK_HOLE) { // Check if the asteroid leaves the grid, or enters a blackhole.
-                                asteroids[i] = newAsteroid();
-                            } else {
-                                asteroids[i].setPosition(x + 1, y);
-                            }
+                            asPoint.x = asteroids[i].getX() + 1;
                             break;
                         default:
                             break;
                     }
 
+                    // Checks that new location is a space tile and not occupied by player.
+                    if ((asPoint.x >= 0 && asPoint.x <= GRID_WIDTH) && asPoint.y >= 0 && asPoint.y <= GRID_HEIGHT) {
+                        if (getSpawns().contains(asPoint) && !(asPoint.equals(pPoint))) {
+                            asteroids[i].setPosition(asPoint.x, asPoint.y);
+                        }
+                    } else {
+                        asteroids[i] = newAsteroid(); // Re-places asteroid somewhere else if it can't move.
+                    }
+
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("asteroid err" + e);
+                    System.out.println("asteroid err moveAsteroids" + e);
                 }
 
             }
@@ -439,7 +433,7 @@ public class GameEngine {
         Can't move to player location.
          */
         Boolean move = false;
-        int dir = rng.nextInt(3);
+        int dir = rng.nextInt(4);
         // Creating new point to represent alien location.
         Point aPoint = new Point();
         aPoint.x = a.getX();
@@ -449,31 +443,45 @@ public class GameEngine {
             // Left
             case 0:
                 aPoint.x = a.getX() - 1;
+                break;
             // Right
             case 1:
                 aPoint.x = a.getX() + 1;
+                break;
             // Up
             case 2:
                 aPoint.y = a.getY() - 1;
+                break;
             // Down
             case 3:
                 aPoint.y = a.getY() + 1;
+                break;
         }
 
         Point pPoint = new Point(player.getX(), player.getY()); // Representation of player location.
         for (int i = 0; i < asteroids.length; i++) { // Compare new location to each asteroid location.
-            Point asPoint = new Point(asteroids[i].getX(), asteroids[i].getY()); // Representation of each asteroid location.
-            // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
-            if (!(getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && !(aPoint.equals(asPoint)))) { // True if not valid tile.
-                move = false;
-                break;
-            } else {
-                move = true;
+            if (asteroids[i] != null) {
+                try {
+                    Point asPoint = new Point(asteroids[i].getX(), asteroids[i].getY()); // Representation of each asteroid location.
+                    // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
+                    if (!(getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && !(aPoint.equals(asPoint)))) { // True if not valid tile.
+                        move = false;
+                        break;
+                    } else {
+                        move = true;
+                    }
+                } catch (java.lang.NullPointerException e) {
+                    System.out.println("asteroid err moveAlien" + e);
+                }
+
+                try {
+                    if (move == true) {
+                        a.setPosition(aPoint.x, aPoint.y);
+                    }
+                } catch (java.lang.NullPointerException e) {
+                    System.out.println("alien err moveAlien " + e);
+                }
             }
-        }
-        
-        if (move == true) {
-            a.setPosition(aPoint.x, aPoint.y);
         }
     }
 
