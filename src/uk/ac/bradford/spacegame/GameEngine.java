@@ -473,10 +473,15 @@ public class GameEngine {
             // Left
             case 0:
                 aPoint.x--; // New location if moving left.
-                // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
-                if (getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && ) {
+                for (int i = 0; i < asteroids.length; i++) {
+                    Point asPoint = new Point(asteroids[i].getX(), asteroids[i].getY());
+                    // Checks if location is a SPACE tile, and the player is not in this tile, and there is no asteroid on this tile.
+                    if (getSpawns().contains(aPoint) && !(aPoint.equals(pPoint)) && !(aPoint.equals(asPoint))) {
+                            
+                    }
 
                 }
+
         }
     }
 
