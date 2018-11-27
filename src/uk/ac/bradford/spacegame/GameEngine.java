@@ -497,7 +497,6 @@ public class GameEngine {
                 } else {
                     move = true;
                 }
-
                 if (move == true) {
                     a.setPosition(aPoint.x, aPoint.y);
                 }
