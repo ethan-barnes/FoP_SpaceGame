@@ -389,6 +389,7 @@ public class GameEngine {
                         asteroids[i].getY());
 
                 try {
+                    // Potential new coords based on movement direction.
                     switch (dir) {
                         case UP:
                             asPoint.y = asteroids[i].getY() - 1;
