@@ -445,12 +445,7 @@ public class GameEngine {
      * @param a The Alien that needs to be moved
      */
     private void moveAlien(Alien a) {
-        /*
-        Move alien randomly. (May become more advanced in future.)
-        Must move to getSpawns() location.
-        Can't move to another alien location.
-        Can't move to player location.
-         */
+        // Moves alien randomly. (May become more advanced in future.)
         Boolean move = false;
         int dir = rng.nextInt(4);
         // Creating new point to represent alien location.
