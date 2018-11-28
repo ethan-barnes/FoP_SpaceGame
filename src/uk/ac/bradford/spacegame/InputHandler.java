@@ -2,6 +2,7 @@ package uk.ac.bradford.spacegame;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Timer;
 
 /**
  * This class handles keyboard events (key presses) captured by a GameGUI object
@@ -45,11 +46,14 @@ public class InputHandler implements KeyListener {
             case KeyEvent.VK_RIGHT: engine.movePlayerRight(); break;//handle right arrow
             case KeyEvent.VK_UP: engine.movePlayerUp(); break;      //handle up arrow
             case KeyEvent.VK_DOWN: engine.movePlayerDown(); break;  //handle down arrow
-        }
+        }   
+        Timer timer = new Timer();
+        timer.schedule(new GameTurn(), 0, 500);
+        
         engine.doTurn();    //any key press will result in this method being called
     }
-
-    /**
+    
+     /**
      * Unused method
      * @param e 
      */
