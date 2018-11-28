@@ -233,7 +233,7 @@ public class GameEngine {
      * level
      */
     private Alien[] spawnAliens() {
-        int numOfAliens = 3;
+        int numOfAliens = cleared + 1; // Increases number of aliens each level.
         int alienHP = 10;
         aliens = new Alien[numOfAliens];
 
@@ -602,7 +602,13 @@ public class GameEngine {
      * health to maximum.
      */
     private void newLevel() {
-
+        cleared++;
+        points = 0;
+        
+        generateLevel();
+        spawnAsteroids();
+        spawnAliens();        
+        spawnPlayer();
     }
 
     /**
