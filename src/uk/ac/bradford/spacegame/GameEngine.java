@@ -394,7 +394,7 @@ public class GameEngine {
                         asPoint.y = asteroids[i].getY() - 1;
                         break;
                     case DOWN:
-                        asPoint.y = asteroids[i].getY() - 1;
+                        asPoint.y = asteroids[i].getY() + 1;
                         break;
                     case LEFT:
                         asPoint.x = asteroids[i].getX() - 1;
@@ -604,11 +604,16 @@ public class GameEngine {
     private void newLevel() {
         cleared++;
         points = 0;
-        
+
         generateLevel();
         spawnAsteroids();
-        spawnAliens();        
-        spawnPlayer();
+        spawnAliens();
+        
+        // Generates a random spawn location for player.
+        int location = rng.nextInt(getSpawns().size());
+        int x = getSpawns().get(location).x;
+        int y = getSpawns().get(location).y;
+        player.setPosition(x, y);
     }
 
     /**
