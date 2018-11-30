@@ -364,6 +364,16 @@ public class GameEngine {
                     points++;
                 }
             }
+
+            // Check for map wrap.
+        } else if (point.x == -1) {
+            player.setPosition(GRID_WIDTH - 1, point.y);
+        } else if (point.x == GRID_WIDTH) {
+            player.setPosition(0, point.y);
+        } else if (point.y == -1) {
+            player.setPosition(point.x, GRID_HEIGHT - 1);
+        } else if (point.y == GRID_HEIGHT) {
+            player.setPosition(point.x, 0);
         }
     }
 
@@ -608,7 +618,7 @@ public class GameEngine {
         generateLevel();
         spawnAsteroids();
         spawnAliens();
-        
+
         // Generates a random spawn location for player.
         int location = rng.nextInt(getSpawns().size());
         int x = getSpawns().get(location).x;
