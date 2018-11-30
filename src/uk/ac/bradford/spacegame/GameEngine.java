@@ -464,7 +464,7 @@ public class GameEngine {
         Point aPoint = new Point();
         aPoint.x = a.getX();
         aPoint.y = a.getY();
-        
+
         pathFinding(aPoint);
 
         switch (dir) { // Potential new alien location.
@@ -530,22 +530,30 @@ public class GameEngine {
         ArrayList<Point> openList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             Point newPoint = new Point();
-            switch(i){
-                case 0: newPoint = new Point(startPoint.x - 1, startPoint.y); break; // Left
-                case 1: newPoint = new Point(startPoint.x + 1, startPoint.y); break; // Right
-                case 2: newPoint = new Point(startPoint.x, startPoint.y - 1); break; // Up
-                case 3: newPoint = new Point(startPoint.x, startPoint.y + 1); break; // Down
+            switch (i) {
+                case 0: // Left
+                    newPoint = new Point(startPoint.x - 1, startPoint.y);
+                    break; 
+                case 1: // Right
+                    newPoint = new Point(startPoint.x + 1, startPoint.y);
+                    break; 
+                case 2: // Up
+                    newPoint = new Point(startPoint.x, startPoint.y - 1);
+                    break; 
+                case 3: // Down
+                    newPoint = new Point(startPoint.x, startPoint.y + 1);
+                    break; 
             }
             openList.add(newPoint);
         }
-        
+
         Point currentSquare; // Square with lowest f score.
         openList.add(startPoint);
-        
+
         do {
-            
+
         } while (!openList.isEmpty());
-        
+
         return startPoint; // Placeholder return.
     }
 
