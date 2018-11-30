@@ -503,12 +503,20 @@ public class GameEngine {
                         && !(aPoint.equals(pPoint))
                         && !(aPoint.equals(asPoint)))) {
                     move = false;
-                    break;
+                    //break;
                 } else {
                     move = true;
                 }
                 if (move == true) {
                     a.setPosition(aPoint.x, aPoint.y);
+                } else if (aPoint.x == -1) { // Check for map wrap.
+                    a.setPosition(GRID_WIDTH - 1, aPoint.y);
+                } else if (aPoint.x == GRID_WIDTH) {
+                    a.setPosition(0, aPoint.y);
+                } else if (aPoint.y == -1) {
+                    a.setPosition(aPoint.x, GRID_HEIGHT - 1);
+                } else if (aPoint.y == GRID_HEIGHT) {
+                    a.setPosition(aPoint.x, 0);
                 }
             }
         }
