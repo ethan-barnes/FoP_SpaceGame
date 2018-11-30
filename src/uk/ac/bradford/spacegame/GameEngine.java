@@ -464,6 +464,8 @@ public class GameEngine {
         Point aPoint = new Point();
         aPoint.x = a.getX();
         aPoint.y = a.getY();
+        
+        pathFinding(aPoint);
 
         switch (dir) { // Potential new alien location.
             // Left
@@ -520,6 +522,31 @@ public class GameEngine {
                 }
             }
         }
+    }
+
+    private Point pathFinding(Point startPoint) {
+        // https://www.raywenderlich.com/3016-introduction-to-a-pathfinding
+        // https://www.raywenderlich.com/3011-how-to-implement-a-pathfinding-with-cocos2d-tutorial
+        ArrayList<Point> openList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Point newPoint = new Point();
+            switch(i){
+                case 0: newPoint = new Point(startPoint.x - 1, startPoint.y); break; // Left
+                case 1: newPoint = new Point(startPoint.x + 1, startPoint.y); break; // Right
+                case 2: newPoint = new Point(startPoint.x, startPoint.y - 1); break; // Up
+                case 3: newPoint = new Point(startPoint.x, startPoint.y + 1); break; // Down
+            }
+            openList.add(newPoint);
+        }
+        
+        Point currentSquare; // Square with lowest f score.
+        openList.add(startPoint);
+        
+        do {
+            
+        } while (!openList.isEmpty());
+        
+        return startPoint; // Placeholder return.
     }
 
     /**
@@ -602,6 +629,7 @@ public class GameEngine {
                     if (tiles[x + i][y + j] == TileType.PULSAR_ACTIVE) {
                         // damage player
                         player.changeHullStrength(-1);
+                        break;
                     }
                 }
             }
