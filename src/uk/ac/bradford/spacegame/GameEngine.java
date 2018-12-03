@@ -465,7 +465,7 @@ public class GameEngine {
         aPoint.x = a.getX();
         aPoint.y = a.getY();
 
-        pathFinding(aPoint);
+        // pathFinding(aPoint);
 
         switch (dir) { // Potential new alien location.
             // Left
