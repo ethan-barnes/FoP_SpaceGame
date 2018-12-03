@@ -465,7 +465,7 @@ public class GameEngine {
         aPoint.x = a.getX();
         aPoint.y = a.getY();
 
-        // pathFinding(aPoint);
+        a.setPosition(pathFinding(aPoint).x, pathFinding(aPoint).y);
 
         switch (dir) { // Potential new alien location.
             // Left
@@ -490,71 +490,103 @@ public class GameEngine {
         Point pPoint = new Point(player.getX(), player.getY());
 
         // Compare new location to each asteroid location.
-        for (int i = 0; i < asteroids.length; i++) {
-            if (asteroids[i] != null) {
-                // Representation of each asteroid location.
-                Point asPoint = new Point(asteroids[i].getX(),
-                        asteroids[i].getY());
-
-                /* 
-                    Checks if location is a SPACE tile, and the player is not in
-                    this tile, and there is no asteroid on this tile.
-                    True if not valid tile.
-                 */
-                if (!(getSpawns().contains(aPoint)
-                        && !(aPoint.equals(pPoint))
-                        && !(aPoint.equals(asPoint)))) {
-                    move = false;
-                    //break;
-                } else {
-                    move = true;
-                }
-                if (move == true) {
-                    a.setPosition(aPoint.x, aPoint.y);
-                } else if (aPoint.x == -1) { // Check for map wrap.
-                    a.setPosition(GRID_WIDTH - 1, aPoint.y);
-                } else if (aPoint.x == GRID_WIDTH) {
-                    a.setPosition(0, aPoint.y);
-                } else if (aPoint.y == -1) {
-                    a.setPosition(aPoint.x, GRID_HEIGHT - 1);
-                } else if (aPoint.y == GRID_HEIGHT) {
-                    a.setPosition(aPoint.x, 0);
-                }
-            }
-        }
+//        for (int i = 0; i < asteroids.length; i++) {
+//            if (asteroids[i] != null) {
+//                // Representation of each asteroid location.
+//                Point asPoint = new Point(asteroids[i].getX(),
+//                        asteroids[i].getY());
+//
+//                /* 
+//                    Checks if location is a SPACE tile, and the player is not in
+//                    this tile, and there is no asteroid on this tile.
+//                    True if not valid tile.
+//                 */
+//                if (!(getSpawns().contains(aPoint)
+//                        && !(aPoint.equals(pPoint))
+//                        && !(aPoint.equals(asPoint)))) {
+//                    move = false;
+//                    //break;
+//                } else {
+//                    move = true;
+//                }
+//                if (move == true) {
+//                    a.setPosition(aPoint.x, aPoint.y);
+//                } else if (aPoint.x == -1) { // Check for map wrap.
+//                    a.setPosition(GRID_WIDTH - 1, aPoint.y);
+//                } else if (aPoint.x == GRID_WIDTH) {
+//                    a.setPosition(0, aPoint.y);
+//                } else if (aPoint.y == -1) {
+//                    a.setPosition(aPoint.x, GRID_HEIGHT - 1);
+//                } else if (aPoint.y == GRID_HEIGHT) {
+//                    a.setPosition(aPoint.x, 0);
+//                }
+//            }
+//        }
     }
 
     private Point pathFinding(Point startPoint) {
         // https://www.raywenderlich.com/3016-introduction-to-a-pathfinding
         // https://www.raywenderlich.com/3011-how-to-implement-a-pathfinding-with-cocos2d-tutorial
+        Point pPoint = new Point(player.getX(), player.getY());
         ArrayList<Point> openList = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            Point newPoint = new Point();
-            switch (i) {
-                case 0: // Left
-                    newPoint = new Point(startPoint.x - 1, startPoint.y);
-                    break; 
-                case 1: // Right
-                    newPoint = new Point(startPoint.x + 1, startPoint.y);
-                    break; 
-                case 2: // Up
-                    newPoint = new Point(startPoint.x, startPoint.y - 1);
-                    break; 
-                case 3: // Down
-                    newPoint = new Point(startPoint.x, startPoint.y + 1);
-                    break; 
-            }
-            openList.add(newPoint);
-        }
-
-        Point currentSquare; // Square with lowest f score.
-        openList.add(startPoint);
-
+        ArrayList<Point> openListValues = new ArrayList<>(); // G and H values.
+        ArrayList<Point> closedList = new ArrayList<>();
         do {
+            for (int i = 0; i < 4; i++) { // Squares surrounding current square.
+                Point newPoint = new Point();
+                Point newPointValues = new Point();
+                int h = Math.abs((startPoint.x - player.getX()) - (startPoint.y - player.getY()));
+                switch (i) {
+                    case 0: // Left
+                        newPoint = new Point(startPoint.x - 1, startPoint.y);
+                        newPointValues = new Point(startPoint.x - newPoint.x, h); // Find G value for x.
+                        break;
+                    case 1: // Right
+                        newPoint = new Point(startPoint.x + 1, startPoint.y);
+                        newPointValues = new Point(newPoint.x - startPoint.x, h); // Find G value for x.
+                        break;
+                    case 2: // Up
+                        newPoint = new Point(startPoint.x, startPoint.y - 1);
+                        newPointValues = new Point(startPoint.y - newPoint.y, h); // Find G value for x.
+                        break;
+                    case 3: // Down
+                        newPoint = new Point(startPoint.x, startPoint.y + 1);
+                        newPointValues = new Point(newPoint.y - startPoint.y, h); // Find G value for x.
+                        break;
+                }
+                openList.add(newPoint);
+                openListValues.add(newPointValues);
 
-        } while (!openList.isEmpty());
+                System.out.println(openList.get(i));
+                System.out.println(openListValues.get(i));
+            }
 
-        return startPoint; // Placeholder return.
+            Point currentSquare = new Point(); // Square with lowest f score.
+            int f = 100;
+            for (int i = 0; i < openList.size(); i++) {
+                try {
+                    if (openListValues.get(i).x + openListValues.get(i).y < f) {
+                        f = openListValues.get(i).x + openListValues.get(i).y;
+                        currentSquare = openList.get(i);
+                        closedList.add(currentSquare); // add current square to closed list
+                        openList.remove(i); // remove current square from open list
+                        openListValues.remove(i); // and remove corresponding values
+                    }
+                } catch (Exception e) {
+                    System.out.println("path finding err " + e);
+                }
+            }
+            //openList.add(startPoint);
+            System.out.println("current square: " + currentSquare);
+            return currentSquare;
+
+//            if (closedList.contains(pPoint)) {
+//                System.out.println("PATH FOUND");
+//                break;
+//            }
+        } while (!(openList.isEmpty()));
+
+//        return startPoint; // Placeholder return.
     }
 
     /**
