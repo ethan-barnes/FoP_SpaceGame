@@ -455,77 +455,31 @@ public class GameEngine {
      * @param a The Alien that needs to be moved
      */
     private void moveAlien(Alien a) {
-        /*
-        Move alien randomly. (May become more advanced in future.)
-         */
-        Boolean move = false;
-        int dir = rng.nextInt(4);
-        // Creating new point to represent alien location.
-        Point aPoint = new Point();
-        aPoint.x = a.getX();
-        aPoint.y = a.getY();
-
-        Point newPoint = pathFinding2(a);
-        a.setPosition(newPoint.x, newPoint.y);
-
-        switch (dir) { // Potential new alien location.
-            // Left
-            case 0:
-                aPoint.x = a.getX() - 1;
-                break;
-            // Right
-            case 1:
-                aPoint.x = a.getX() + 1;
-                break;
-            // Up
-            case 2:
-                aPoint.y = a.getY() - 1;
-                break;
-            // Down
-            case 3:
-                aPoint.y = a.getY() + 1;
-                break;
+        Point aPoint = pathFinding(a);
+        Point pPoint = new Point(player.getX(), player.getY());
+        // Check if alien will move onto player.
+        if (aPoint.equals(pPoint)) {
+            player.hullStrength--;
+        } else {
+            a.setPosition(aPoint.x, aPoint.y);
         }
 
-        // Representation of player location.
-        Point pPoint = new Point(player.getX(), player.getY());
+        // Check if alien is on an asteroid.
+        for (int i = 0; i < asteroids.length; i++) {
+            if (asteroids[i] != null) {
+                Point asPoint = new Point(asteroids[i].getX(),
+                        asteroids[i].getY());
 
-        // Compare new location to each asteroid location.
-//        for (int i = 0; i < asteroids.length; i++) {
-//            if (asteroids[i] != null) {
-//                // Representation of each asteroid location.
-//                Point asPoint = new Point(asteroids[i].getX(),
-//                        asteroids[i].getY());
-//
-//                /* 
-//                    Checks if location is a SPACE tile, and the player is not in
-//                    this tile, and there is no asteroid on this tile.
-//                    True if not valid tile.
-//                 */
-//                if (!(getSpawns().contains(aPoint)
-//                        && !(aPoint.equals(pPoint))
-//                        && !(aPoint.equals(asPoint)))) {
-//                    move = false;
-//                    //break;
-//                } else {
-//                    move = true;
-//                }
-//                if (move == true) {
-//                    a.setPosition(aPoint.x, aPoint.y);
-//                } else if (aPoint.x == -1) { // Check for map wrap.
-//                    a.setPosition(GRID_WIDTH - 1, aPoint.y);
-//                } else if (aPoint.x == GRID_WIDTH) {
-//                    a.setPosition(0, aPoint.y);
-//                } else if (aPoint.y == -1) {
-//                    a.setPosition(aPoint.x, GRID_HEIGHT - 1);
-//                } else if (aPoint.y == GRID_HEIGHT) {
-//                    a.setPosition(aPoint.x, 0);
-//                }
-//            }
-//        }
+                // True if alien is on same tile as asteroid.
+                if (aPoint.equals(asPoint)) {
+                    // Replace asteroid alien is on with new asteroid.
+                    asteroids[i] = newAsteroid();
+                }
+            }
+        }
     }
-    
-    private Point pathFinding2(Alien a) {
+
+    private Point pathFinding(Alien a) {
         /*
         Get current alien location.
         Look at all four surrounding squares.
@@ -539,7 +493,7 @@ public class GameEngine {
 
         for (int i = 0; i < 4; i++) {
             Point newPoint = new Point();
-            switch (i) {
+            switch (i) { // Looks the four surrounding tiles of the alien.
                 case 0: // Left 
                     newPoint.x = startPoint.x - 1;
                     newPoint.y = startPoint.y;
@@ -557,25 +511,25 @@ public class GameEngine {
                     newPoint.y = startPoint.y + 1;
                     break;
             }
-            
-            // Find manhattan block distance from alien to player.
+
+            // Find manhattan block distance from surrounding tile to player.
             hValue = Math.abs((player.getX() - newPoint.x))
                     + Math.abs((player.getY() - newPoint.y));
 
             if (hValue < h && getSpawns().contains(newPoint)) {
                 h = hValue;
                 bestPoint = newPoint;
-            } else if (hValue == h && getSpawns().contains(newPoint)) { // If two points are the same distance from player, choose one randomly.
-               if (rng.nextInt() > 0) {
-                   bestPoint = newPoint;
-               }
+
+                /* If two points are the same distance from player, choose one 
+                randomly. */
+            } else if (hValue == h && getSpawns().contains(newPoint)) {
+                if (rng.nextInt() > 0) {
+                    bestPoint = newPoint;
+                }
             }
 
         }
-        System.out.println(rng.nextInt());
-        System.out.println("hValue: " + hValue);
-        System.out.println("bestPoint: " + bestPoint);
-        return bestPoint; // Place holder return.
+        return bestPoint;
     }
 
     /**
