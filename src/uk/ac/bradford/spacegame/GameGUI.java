@@ -3,6 +3,7 @@ package uk.ac.bradford.spacegame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import java.io.File;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.util.Random;
 import uk.ac.bradford.spacegame.GameEngine.TileType;
+import uk.ac.bradford.spacegame.GameEngine.PlayerDir;
 
 /**
  * The GameGUI class is responsible for rendering graphics to the screen to
@@ -112,6 +114,7 @@ class Canvas extends JPanel {
     private BufferedImage apulsar;
     private BufferedImage ipulsar;
     private BufferedImage alien;
+    private PlayerDir playerDir = PlayerDir.UP;
 
     TileType[][] currentTiles;  //the current 2D array of tiles to display
     Player currentPlayer;       //the current player object to be drawn
@@ -251,7 +254,24 @@ class Canvas extends JPanel {
             }
         }
         if (currentPlayer != null) {
+//            switch (playerDir) {
+//                case UP:                    
+//                    //g2.rotate(Math.toRadians(90));
+//                    //g2.drawImage(player, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
+//                    break;
+//                case DOWN:
+//                    break;
+//                case LEFT:
+//                    break;
+//                case RIGHT:
+//                    break;
+//            }            
+            AffineTransform aff = new AffineTransform();
+            g2.rotate(Math.toRadians(180));
+            g2.setTransform(aff);
+            
             g2.drawImage(player, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
+
             drawHealthBar(g2, currentPlayer);
         }
     }
