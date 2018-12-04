@@ -478,7 +478,15 @@ public class GameEngine {
             }
         }
     }
-
+    
+    /**
+     * Finds the tile adjacent to the alien that would be the closest to the 
+     * player. Will only choose tiles with the value SPACE.
+     * 
+     * @param a the alien to find the next move for.
+     * @return the tile the alien should move to in order to be closer to the 
+     * player.
+     */
     private Point pathFinding(Alien a) {
         /*
         Get current alien location.
