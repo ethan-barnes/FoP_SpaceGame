@@ -465,7 +465,8 @@ public class GameEngine {
         aPoint.x = a.getX();
         aPoint.y = a.getY();
 
-        a.setPosition(pathFinding(aPoint).x, pathFinding(aPoint).y);
+        Point newPoint = pathFinding2(a);
+        a.setPosition(newPoint.x, newPoint.y);
 
         switch (dir) { // Potential new alien location.
             // Left
@@ -523,70 +524,58 @@ public class GameEngine {
 //            }
 //        }
     }
+    
+    private Point pathFinding2(Alien a) {
+        /*
+        Get current alien location.
+        Look at all four surrounding squares.
+        Move to square closest to user (manhattan block).
+        If two squares are tied, chose randomly.
+         */
+        int h = 100;
+        int hValue = 0;
+        Point bestPoint = new Point();
+        Point startPoint = new Point(a.getX(), a.getY());
 
-    private Point pathFinding(Point startPoint) {
-        // https://www.raywenderlich.com/3016-introduction-to-a-pathfinding
-        // https://www.raywenderlich.com/3011-how-to-implement-a-pathfinding-with-cocos2d-tutorial
-        Point pPoint = new Point(player.getX(), player.getY());
-        ArrayList<Point> openList = new ArrayList<>();
-        ArrayList<Point> openListValues = new ArrayList<>(); // G and H values.
-        ArrayList<Point> closedList = new ArrayList<>();
-        do {
-            for (int i = 0; i < 4; i++) { // Squares surrounding current square.
-                Point newPoint = new Point();
-                Point newPointValues = new Point();
-                int h = Math.abs((startPoint.x - player.getX()) - (startPoint.y - player.getY()));
-                switch (i) {
-                    case 0: // Left
-                        newPoint = new Point(startPoint.x - 1, startPoint.y);
-                        newPointValues = new Point(startPoint.x - newPoint.x, h); // Find G value for x.
-                        break;
-                    case 1: // Right
-                        newPoint = new Point(startPoint.x + 1, startPoint.y);
-                        newPointValues = new Point(newPoint.x - startPoint.x, h); // Find G value for x.
-                        break;
-                    case 2: // Up
-                        newPoint = new Point(startPoint.x, startPoint.y - 1);
-                        newPointValues = new Point(startPoint.y - newPoint.y, h); // Find G value for x.
-                        break;
-                    case 3: // Down
-                        newPoint = new Point(startPoint.x, startPoint.y + 1);
-                        newPointValues = new Point(newPoint.y - startPoint.y, h); // Find G value for x.
-                        break;
-                }
-                openList.add(newPoint);
-                openListValues.add(newPointValues);
+        for (int i = 0; i < 4; i++) {
+            Point newPoint = new Point();
+            switch (i) {
+                case 0: // Left 
+                    newPoint.x = startPoint.x - 1;
+                    newPoint.y = startPoint.y;
+                    break;
+                case 1: // Right
+                    newPoint.x = startPoint.x + 1;
+                    newPoint.y = startPoint.y;
+                    break;
+                case 2: // Up
+                    newPoint.x = startPoint.x;
+                    newPoint.y = startPoint.y - 1;
+                    break;
+                case 3: // Down
+                    newPoint.x = startPoint.x;
+                    newPoint.y = startPoint.y + 1;
+                    break;
+            }
+            
+            // Find manhattan block distance from alien to player.
+            hValue = Math.abs((player.getX() - newPoint.x))
+                    + Math.abs((player.getY() - newPoint.y));
 
-                System.out.println(openList.get(i));
-                System.out.println(openListValues.get(i));
+            if (hValue < h && getSpawns().contains(newPoint)) {
+                h = hValue;
+                bestPoint = newPoint;
+            } else if (hValue == h && getSpawns().contains(newPoint)) { // If two points are the same distance from player, choose one randomly.
+               if (rng.nextInt() > 0) {
+                   bestPoint = newPoint;
+               }
             }
 
-            Point currentSquare = new Point(); // Square with lowest f score.
-            int f = 100;
-            for (int i = 0; i < openList.size(); i++) {
-                try {
-                    if (openListValues.get(i).x + openListValues.get(i).y < f) {
-                        f = openListValues.get(i).x + openListValues.get(i).y;
-                        currentSquare = openList.get(i);
-                        closedList.add(currentSquare); // add current square to closed list
-                        openList.remove(i); // remove current square from open list
-                        openListValues.remove(i); // and remove corresponding values
-                    }
-                } catch (Exception e) {
-                    System.out.println("path finding err " + e);
-                }
-            }
-            //openList.add(startPoint);
-            System.out.println("current square: " + currentSquare);
-            return currentSquare;
-
-//            if (closedList.contains(pPoint)) {
-//                System.out.println("PATH FOUND");
-//                break;
-//            }
-        } while (!(openList.isEmpty()));
-
-//        return startPoint; // Placeholder return.
+        }
+        System.out.println(rng.nextInt());
+        System.out.println("hValue: " + hValue);
+        System.out.println("bestPoint: " + bestPoint);
+        return bestPoint; // Place holder return.
     }
 
     /**
