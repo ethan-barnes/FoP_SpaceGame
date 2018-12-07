@@ -291,10 +291,10 @@ public class GameEngine {
      */
     public void movePlayerLeft() {
         // Generates coordinates if the player were to move left.
-        
+
         // Changes player image to different direction.
         Canvas.playerDir = PlayerDir.LEFT;
-        
+
         Point newPlayerLoc = new Point(player.getX() - 1, player.getY());
         movePlayer(newPlayerLoc);
     }
@@ -310,10 +310,10 @@ public class GameEngine {
      */
     public void movePlayerRight() {
         // Generates coordinates if the player were to move right.
-        
+
         // Changes player image to different direction.
         Canvas.playerDir = PlayerDir.RIGHT;
-        
+
         Point newPlayerLoc = new Point(player.getX() + 1, player.getY());
         movePlayer(newPlayerLoc);
     }
@@ -379,13 +379,29 @@ public class GameEngine {
 
             // Check for map wrap.
         } else if (point.x == -1) {
-            player.setPosition(GRID_WIDTH - 1, point.y);
+            Point mPoint = new Point(GRID_WIDTH - 1, point.y);
+            // Stops player moving onto blackhole/pulsar.
+            if (getSpawns().contains(mPoint)) {
+                player.setPosition(GRID_WIDTH - 1, point.y);
+            }
         } else if (point.x == GRID_WIDTH) {
-            player.setPosition(0, point.y);
+            Point mPoint = new Point(0, point.y);
+            // Stops player moving onto blackhole/pulsar.
+            if (getSpawns().contains(mPoint)) {
+                player.setPosition(0, point.y);
+            }
         } else if (point.y == -1) {
-            player.setPosition(point.x, GRID_HEIGHT - 1);
+            Point mPoint = new Point(point.x, GRID_HEIGHT - 1);
+            // Stops player moving onto blackhole/pulsar.
+            if (getSpawns().contains(mPoint)) {
+                player.setPosition(point.x, GRID_HEIGHT - 1);
+            }
         } else if (point.y == GRID_HEIGHT) {
-            player.setPosition(point.x, 0);
+            Point mPoint = new Point(point.x, 0);
+            // Stops player moving onto blackhole/pulsar.
+            if (getSpawns().contains(mPoint)) {
+                player.setPosition(point.x, 0);
+            }
         }
     }
 
