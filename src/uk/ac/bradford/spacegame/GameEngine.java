@@ -492,6 +492,7 @@ public class GameEngine {
             int count = 0;
             for (int i = 0; i < aliens.length; i++) {
                 Point alien = new Point(aliens[i].getX(), aliens[i].getY());
+                // Checking that the alien won't move on top of another alien.
                 if (!(aPoint.equals(alien))) {
                     count++;
                 }
@@ -538,7 +539,7 @@ public class GameEngine {
 
         for (int i = 0; i < 4; i++) {
             Point newPoint = new Point();
-            switch (i) { // Looks the four surrounding tiles of the alien.
+            switch (i) { // Looks at the four surrounding tiles of the alien.
                 case 0: // Left 
                     newPoint.x = startPoint.x - 1;
                     newPoint.y = startPoint.y;
@@ -560,7 +561,8 @@ public class GameEngine {
             // Find manhattan block distance from surrounding tile to player.
             hValue = Math.abs((player.getX() - newPoint.x))
                     + Math.abs((player.getY() - newPoint.y));
-
+            
+            // Determine best tile to move to (shortest distance to player).
             if (hValue < h && getSpawns().contains(newPoint)) {
                 h = hValue;
                 bestPoint = newPoint;
