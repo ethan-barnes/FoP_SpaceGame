@@ -109,12 +109,15 @@ class Canvas extends JPanel {
     private BufferedImage space3;
     private BufferedImage space4;
     private BufferedImage blackHole;
-    private BufferedImage player;
+    private BufferedImage playerUP;
+    private BufferedImage playerDOWN;
+    private BufferedImage playerLEFT;
+    private BufferedImage playerRIGHT;
     private BufferedImage asteroid;
     private BufferedImage apulsar;
     private BufferedImage ipulsar;
     private BufferedImage alien;
-    private PlayerDir playerDir = PlayerDir.UP;
+    public static PlayerDir playerDir = PlayerDir.UP;
 
     TileType[][] currentTiles;  //the current 2D array of tiles to display
     Player currentPlayer;       //the current player object to be drawn
@@ -149,9 +152,18 @@ class Canvas extends JPanel {
             blackHole = ImageIO.read(new File("assets/blackhole.png"));
             assert blackHole.getHeight() == GameGUI.TILE_HEIGHT
                     && blackHole.getWidth() == GameGUI.TILE_WIDTH;
-            player = ImageIO.read(new File("assets/player.png"));
-            assert player.getHeight() == GameGUI.TILE_HEIGHT
-                    && player.getWidth() == GameGUI.TILE_WIDTH;
+            playerUP = ImageIO.read(new File("assets/playerUP.png"));
+            assert playerUP.getHeight() == GameGUI.TILE_HEIGHT
+                    && playerUP.getWidth() == GameGUI.TILE_WIDTH;
+            playerDOWN = ImageIO.read(new File("assets/playerDOWN.png"));
+            assert playerDOWN.getHeight() == GameGUI.TILE_HEIGHT
+                    && playerDOWN.getWidth() == GameGUI.TILE_WIDTH;
+            playerLEFT = ImageIO.read(new File("assets/playerLEFT.png"));
+            assert playerLEFT.getHeight() == GameGUI.TILE_HEIGHT
+                    && playerLEFT.getWidth() == GameGUI.TILE_WIDTH;
+            playerRIGHT = ImageIO.read(new File("assets/playerRIGHT.png"));
+            assert playerRIGHT.getHeight() == GameGUI.TILE_HEIGHT
+                    && playerRIGHT.getWidth() == GameGUI.TILE_WIDTH;
             asteroid = ImageIO.read(new File("assets/asteroid.png"));
             assert asteroid.getHeight() == GameGUI.TILE_HEIGHT
                     && asteroid.getWidth() == GameGUI.TILE_WIDTH;
@@ -254,24 +266,20 @@ class Canvas extends JPanel {
             }
         }
         if (currentPlayer != null) {
-//            switch (playerDir) {
-//                case UP:                    
-//                    //g2.rotate(Math.toRadians(90));
-//                    //g2.drawImage(player, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
-//                    break;
-//                case DOWN:
-//                    break;
-//                case LEFT:
-//                    break;
-//                case RIGHT:
-//                    break;
-//            }            
-            AffineTransform aff = new AffineTransform();
-            g2.rotate(Math.toRadians(180));
-            g2.setTransform(aff);
-            
-            g2.drawImage(player, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
-
+            switch (playerDir) {
+                case UP:
+                    g2.drawImage(playerUP, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
+                    break;
+                case DOWN:
+                    g2.drawImage(playerDOWN, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
+                    break;
+                case LEFT:
+                    g2.drawImage(playerLEFT, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
+                    break;
+                case RIGHT:
+                    g2.drawImage(playerRIGHT, currentPlayer.getX() * GameGUI.TILE_WIDTH, currentPlayer.getY() * GameGUI.TILE_HEIGHT, null);
+                    break;
+            }
             drawHealthBar(g2, currentPlayer);
         }
     }

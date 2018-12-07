@@ -18,6 +18,10 @@ import java.util.Random;
  */
 public class GameEngine {
 
+    public enum PlayerDir {
+        UP, DOWN, LEFT, RIGHT
+    }
+
     /**
      * An enumeration type to represent different types of tiles that make up
      * the level. Each type has a corresponding image file that is used to draw
@@ -295,6 +299,7 @@ public class GameEngine {
      */
     public void movePlayerLeft() {
         // Coordinates if the player were to move left.
+        Canvas.playerDir = PlayerDir.LEFT;
         Point newPlayerLoc = new Point(player.getX() - 1, player.getY());
         movePlayer(newPlayerLoc);
     }
@@ -310,6 +315,7 @@ public class GameEngine {
      */
     public void movePlayerRight() {
         // Coordinates if the player were to move right.
+        Canvas.playerDir = PlayerDir.RIGHT;
         Point newPlayerLoc = new Point(player.getX() + 1, player.getY());
         movePlayer(newPlayerLoc);
     }
@@ -325,6 +331,7 @@ public class GameEngine {
      */
     public void movePlayerUp() {
         // Coordinates if the player were to move up.
+        Canvas.playerDir = PlayerDir.UP;
         Point newPlayerLoc = new Point(player.getX(), player.getY() - 1);
         movePlayer(newPlayerLoc);
     }
@@ -340,6 +347,7 @@ public class GameEngine {
      */
     public void movePlayerDown() {
         // Coordinates if the player were to move down.
+        Canvas.playerDir = PlayerDir.DOWN;
         Point newPlayerLoc = new Point(player.getX(), player.getY() + 1);
         movePlayer(newPlayerLoc);
     }
@@ -457,11 +465,20 @@ public class GameEngine {
     private void moveAlien(Alien a) {
         Point aPoint = pathFinding(a);
         Point pPoint = new Point(player.getX(), player.getY());
-        // Check if alien will move onto player.
+        // Check if alien will move onto player.        
         if (aPoint.equals(pPoint)) {
             player.hullStrength--;
         } else {
-            a.setPosition(aPoint.x, aPoint.y);
+            int count = 0;
+            for (int i = 0; i < aliens.length; i++) {
+                Point alien = new Point(aliens[i].getX(), aliens[i].getY());
+                if (!(aPoint.equals(alien))) {
+                    count++;
+                }                   
+            }
+            if (count == aliens.length) {
+                a.setPosition(aPoint.x, aPoint.y);
+            }
         }
 
         // Check if alien is on an asteroid.
@@ -478,13 +495,13 @@ public class GameEngine {
             }
         }
     }
-    
+
     /**
-     * Finds the tile adjacent to the alien that would be the closest to the 
+     * Finds the tile adjacent to the alien that would be the closest to the
      * player. Will only choose tiles with the value SPACE.
-     * 
+     *
      * @param a the alien to find the next move for.
-     * @return the tile the alien should move to in order to be closer to the 
+     * @return the tile the alien should move to in order to be closer to the
      * player.
      */
     private Point pathFinding(Alien a) {
