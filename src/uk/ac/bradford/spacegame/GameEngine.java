@@ -184,14 +184,6 @@ public class GameEngine {
                 }
             }
         }
-
-        /* Test for loop outputs contents of tiles to console.
-        for (int i = 0; i < GRID_WIDTH; i++) {
-            for (int j = 0; j < GRID_HEIGHT; j++) {
-                System.out.println(tiles[i][j]);                
-            }            
-        }
-         */
         return tiles;
     }
 
@@ -268,7 +260,7 @@ public class GameEngine {
         int x = getSpawns().get(location).x;
         int y = getSpawns().get(location).y;
 
-        player = new Player(10, x, y); // Temporary player hull strength = 10.
+        player = new Player(15, x, y); // Temporary player hull strength = 15.
         return player;
     }
 
@@ -298,8 +290,11 @@ public class GameEngine {
      * player position, but could make other changes to the game.
      */
     public void movePlayerLeft() {
-        // Coordinates if the player were to move left.
+        // Generates coordinates if the player were to move left.
+        
+        // Changes player image to different direction.
         Canvas.playerDir = PlayerDir.LEFT;
+        
         Point newPlayerLoc = new Point(player.getX() - 1, player.getY());
         movePlayer(newPlayerLoc);
     }
@@ -314,8 +309,11 @@ public class GameEngine {
      * update the player position, but could make other changes to the game.
      */
     public void movePlayerRight() {
-        // Coordinates if the player were to move right.
+        // Generates coordinates if the player were to move right.
+        
+        // Changes player image to different direction.
         Canvas.playerDir = PlayerDir.RIGHT;
+        
         Point newPlayerLoc = new Point(player.getX() + 1, player.getY());
         movePlayer(newPlayerLoc);
     }
@@ -330,8 +328,11 @@ public class GameEngine {
      * position, but could make other changes to the game.
      */
     public void movePlayerUp() {
-        // Coordinates if the player were to move up.
+        // Generates coordinates if the player were to move up.
+
+        // Changes player image to different direction.
         Canvas.playerDir = PlayerDir.UP;
+
         Point newPlayerLoc = new Point(player.getX(), player.getY() - 1);
         movePlayer(newPlayerLoc);
     }
@@ -346,8 +347,11 @@ public class GameEngine {
      * position, but could make other changes to the game.
      */
     public void movePlayerDown() {
-        // Coordinates if the player were to move down.
+        // Generats coordinates if the player were to move down.
+
+        // Changes player image to different direction.
         Canvas.playerDir = PlayerDir.DOWN;
+
         Point newPlayerLoc = new Point(player.getX(), player.getY() + 1);
         movePlayer(newPlayerLoc);
     }
@@ -474,7 +478,7 @@ public class GameEngine {
                 Point alien = new Point(aliens[i].getX(), aliens[i].getY());
                 if (!(aPoint.equals(alien))) {
                     count++;
-                }                   
+                }
             }
             if (count == aliens.length) {
                 a.setPosition(aPoint.x, aPoint.y);
@@ -668,16 +672,6 @@ public class GameEngine {
         int x = getSpawns().get(location).x;
         int y = getSpawns().get(location).y;
         player.setPosition(x, y);
-    }
-
-    /**
-     * Places the player in a level by choosing a spawn location from the spawns
-     * ArrayList, removing the spawn position as it is used. The method sets the
-     * players position in the level by calling its setPosition method with the
-     * x and y values of the Point taken from the spawns ArrayList.
-     */
-    private void placePlayer() {
-
     }
 
     /**
