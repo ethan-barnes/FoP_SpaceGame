@@ -471,7 +471,7 @@ public class GameEngine {
         Point pPoint = new Point(player.getX(), player.getY());
         // Check if alien will move onto player.        
         if (aPoint.equals(pPoint)) {
-            player.hullStrength--;
+            player.changeHullStrength(-1);
         } else {
             int count = 0;
             for (int i = 0; i < aliens.length; i++) {
