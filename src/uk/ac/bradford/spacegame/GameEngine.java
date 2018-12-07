@@ -171,10 +171,10 @@ public class GameEngine {
                     tiles[i][j] = TileType.BLACK_HOLE;
                 } else if (rng.nextDouble() <= PULSAR_CHANCE) {
                     /*
-                    Temporary if statement to decide between PULSAR_ACTIVE and
+                    If statement to decide between PULSAR_ACTIVE and
                     PULSAR_INACTIVE.
                      */
-                    if (rng.nextInt(10) > 5) { //Roughly 50/50.
+                    if (rng.nextInt(10) > 5) { // Roughly 50/50.
                         tiles[i][j] = TileType.PULSAR_ACTIVE;
                     } else {
                         tiles[i][j] = TileType.PULSAR_INACTIVE;
